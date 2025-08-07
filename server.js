@@ -1,13 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const connectionString = 'mongodb+srv://jpdev:jpdev@cluster0.qjzrob8.mongodb.net/BANCOTESTE?retryWrites=true&w=majority&appName=Cluster0';
-mongoose.connect(connectionString)
+mongoose.connect(process.env.CONNECTIONSTRING)
     .then(()=>{
         console.log("Conectado com sucesso ao banco de dados");
+        app.emit("ok");
     })
     .catch((err)=>{
-        console.error("Conexão falhou " + err);
+        console.error("Conexão com o banco de dados falhou " + err);
     });
 const routes = require('./routes');
 const path = require('path');
@@ -23,7 +24,10 @@ app.set('view engine', 'ejs');
 app.use(middleware);
 app.use(routes);
 
-app.listen(3000, ()=>{
+app.on("ok", ()=>{
+    app.listen(3000, ()=>{
     console.log("Servidor online em: http://localhost:3000");
 });
+})
+
 
