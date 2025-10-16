@@ -1,4 +1,5 @@
-<%- include('includes/head') %> <%- include('includes/nav') %>
+<%- include('includes/head') %>
+<%- include('includes/nav') %>
 <div class="container">
   <div class="row">
     <div class="col-lg-2"></div>
@@ -6,27 +7,28 @@
     <div class="col-lg-8 mt-3">
       <h1 class="text-center">Criar conta ou fazer login</h1>
       <p class="text-center lead">Faça login ou crie sua conta abaixo</p>
-
+      <%- include('includes/messages') %>
       <div class="row">
         <div class="col-lg">
           <h4>Faça seu cadastro</h4>
           <form action="/login/register" method="POST">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
             <div class="mb-3">
-              <label for="inputEmail" class="form-label">Email</label>
+              <label for="inputCadastroEmail" class="form-label">Email</label>
               <input
                 type="email"
                 name="email"
                 class="form-control"
-                id="inputEmail"
+                id="inputCadastroEmail"
               />
             </div>
             <div class="mb-3">
-              <label for="inputPassword" class="form-label">Senha</label>
+              <label for="inputCadastroPassword" class="form-label">Senha</label>
               <input
                 type="password"
                 name="password"
                 class="form-control"
-                id="inputPassword"
+                id="inputCadastroPassword"
               />
             </div>
             <button type="submit" class="btn btn-primary">Cadastrar</button>
@@ -36,22 +38,23 @@
         <div class="col-lg">
           <h4>Fazer login</h4>
           <form action="/login/login" method="POST">
+            
             <div class="mb-3">
-              <label for="inputEmail" class="form-label">Email</label>
+              <label for="inputLoginEmail" class="form-label">Email</label>
               <input
                 type="email"
                 name="email"
                 class="form-control"
-                id="inputEmail"
+                id="inputLoginEmail"
               />
             </div>
             <div class="mb-3">
-              <label for="inputPassword" class="form-label">Senha</label>
+              <label for="inputLoginPassword" class="form-label">Senha</label>
               <input
                 type="password"
                 name="password"
                 class="form-control"
-                id="inputPassword"
+                id="inputLoginPassword"
               />
             </div>
             <button type="submit" class="btn btn-primary">Logar</button>
