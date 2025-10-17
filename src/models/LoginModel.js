@@ -1,8 +1,9 @@
-const mongoose = require('mongoose')
-const validator = require('validator')
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const LoginSchema = new mongoose.Schema({
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true},
   password: { type: String, required: true }
 })
 
@@ -14,25 +15,49 @@ class Login {
     this.errors = []
     this.user = null
   }
+  async login(){
+    this.validate();
+    if (this.errors.length > 0) return;
+    this.user = await LoginModel.findOne({email: this.body.email});
+    if(!this.user) {
+      this.errors.push("Usuário ou senha inválidos");
+      return;
+    }
 
-  async register () {
-    this.validate()
-
-    if (this.errors.length > 0) return
-    try {
-      this.user = await LoginModel.create(this.body)
-    } catch (e) {
-      console.log(e);
+    //validar senha
+    if(!bcrypt.compareSync(this.body.password, this.user.password)){
+      this.errors.push("Senha inválida.");
+      this.user = null;
       return;
     }
   }
+  async register () {
+    this.validate()
+
+    //Evitar conexão com o banco se já houver erros de validação de input
+    if (this.errors.length > 0) return
+    await this.userExists();
+    if (this.errors.length > 0) return
+
+    const salt = bcrypt.genSaltSync();
+    this.body.password = bcrypt.hashSync(this.body.password, salt);
+
+    this.user = await LoginModel.create(this.body)
+
+  }
 
   validate () {
+    //falta implementar mais validações e estudar mais a biblioteca validator
     this.cleanUp()
     if (!validator.isEmail(this.body.email)) this.errors.push('E-mail inválido')
-    if (this.body.password.length < 3 || this.body.password.length > 50) {
-      this.errors.push('A senha precisa ter entre 3 e 50 caracteres')
-    }
+    if (this.body.password.length < 3 || this.body.password.length > 50) this.errors.push('A senha precisa ter entre 3 e 50 caracteres')
+    
+  
+  }
+
+  async userExists () {
+    this.user = await LoginModel.findOne({email: this.body.email});
+    if(this.user) this.errors.push("Este e-mail já está cadastrado.");
   }
 
   cleanUp () {
@@ -47,5 +72,7 @@ class Login {
     }
   }
 }
+
+
 
 module.exports = Login
