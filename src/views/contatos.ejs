@@ -1,5 +1,4 @@
-<%- include('includes/head') %>
-<%- include('includes/nav') %>
+<%- include('includes/head') %> <%- include('includes/nav') %>
 <div class="container">
   <div class="row">
     <div class="col-lg-2"></div>
@@ -9,48 +8,56 @@
       <p class="text-center lead">Crie ou edite seus contatos abaixo</p>
 
       <%- include('includes/messages') %>
-                <form action="/contatos/register" method="POST">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
-            <div class="mb-3">
-              <label for="inputContatoNome" class="form-label">Nome</label>
-              <input
-                type="text"
-                name="nome"
-                class="form-control"
-                id="inputContatoNome"
-              />
-            </div>
-    
-            <div class="mb-3">
-              <label for="inputContatoSobrenome" class="form-label">Sobrenome</label>
-              <input
-                type="text"
-                name="sobrenome"
-                class="form-control"
-                id="inputContatoSobrenome"
-              />
-            </div>
+       
+      <form action="/contatos/register" method="POST">
 
-            <div class="mb-3">
-              <label for="inputContatoEmail" class="form-label">Email</label>
-              <input
-                type="email"
-                name="nome"
-                class="form-control"
-                id="inputContatoEmail"
-              />
-            </div>
-              <div class="mb-3">
-              <label for="inputContatoTelefone" class="form-label">Telefone</label>
-              <input
-                type="tel"
-                name="telefone"
-                class="form-control"
-                id="inputContatoTelefone"
-              />
-            </div>
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
-          </form>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <div class="mb-3">
+          <label for="inputContatoNome" class="form-label">Nome</label>
+          <input
+            type="text"
+            name="nome"
+            class="form-control"
+            id="inputContatoNome"
+            value="<%= contato.nome %>"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="inputContatoSobrenome" class="form-label"
+            >Sobrenome</label
+          >
+          <input
+            type="text"
+            name="sobrenome"
+            class="form-control"
+            id="inputContatoSobrenome"
+            value="<%= contato.sobrenome %>"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="inputContatoEmail" class="form-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="form-control"
+            id="inputContatoEmail"
+            value="<%= contato.email %>"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="inputContatoTelefone" class="form-label">Telefone</label>
+          <input
+            type="tel"
+            name="telefone"
+            class="form-control"
+            id="inputContatoTelefone"
+            value="<%= contato.telefone %>"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+      </form>
     </div>
 
     <div class="col-lg-2"></div>
