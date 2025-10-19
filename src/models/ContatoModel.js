@@ -26,11 +26,11 @@ class Contato {
   validate () {
     this.cleanUp()
 
-    if (this.body.email && !validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
-    if(!this.body.nome) this.errors.push('Nome é um campo obrigatório.');
-    if(!this.body.email && !this.body.telefone) this.errors.push('Ao menos um email ou um telefone devem ser informados.');
-
-
+    if (this.body.email && !validator.isEmail(this.body.email))
+      this.errors.push('E-mail inválido')
+    if (!this.body.nome) this.errors.push('Nome é um campo obrigatório.')
+    if (!this.body.email && !this.body.telefone)
+      this.errors.push('Ao menos um email ou um telefone devem ser informados.')
   }
 
   cleanUp () {
@@ -46,10 +46,18 @@ class Contato {
       telefone: this.body.telefone
     }
   }
-  static async buscarPorId(id){
-    if(typeof id !== 'string') return;
-    const contato = await ContatoModel.findById(id);
-    return contato;
+  static async buscarPorId (id) {
+    if (typeof id !== 'string') return
+    const contato = await ContatoModel.findById(id)
+    return contato
+  }
+  async edit (id) {
+    if (typeof id !== 'string') return
+    this.validate()
+    if (this.errors.length > 0) return
+    this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {
+      new: true
+    })
   }
 }
 
