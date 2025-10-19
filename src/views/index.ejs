@@ -1,17 +1,43 @@
 <%- include('includes/head') %>
 <%- include('includes/nav') %>
+
 <div class="container">
   <div class="row">
     <div class="col-lg-2"></div>
 
     <div class="col-lg-8 mt-3">
       <h1 class="text-center">Agenda</h1>
-      <p class="text-center lead">Faça login para continuar</p>
-
+      
       <%- include('includes/messages') %>
+      
+      <% if (user) { %>
+        <p class="text-center lead">Visualize seus contatos abaixo</p>
+        <% if (contatos.length > 0) { %>
+          <div class="reponsive-table">
+            <table class="table mt-3">
+              <% contatos.forEach(contato => { %>
+                <tr>
+                  <td><%= contato.nome %></td>
+                  <td><%= contato.sobrenome %></td>
+                  <td><%= contato.email %></td>
+                  <td><%= contato.telefone %></td>
+                  <td><a href="/contatos/index/<%= contato._id %>">Editar</a></td>
+                  <td><a class="text-danger" href="/contatos/delete/<%= contato._id %>">Excluir</a></td>
+                </tr>
+              <% }) %>
+            </table>
+          </div>
+        <% } else { %>
+          <p class="text-center lead mt-3">Não há contatos cadastrados. Clique <a class="link-offset-2 link-underline link-underline-opacity-0" href="/contatos/index">aqui</a> para cadastrar um novo contato.</p>
+        <% } %>
+      <% } else { %>
+        <h3 class="text-center">Efetue <a class="link-offset-2 link-underline link-underline-opacity-0" href="/login/index">login</a> para continuar.</h3>
+        
+      <% } %>
     </div>
 
     <div class="col-lg-2"></div>
   </div>
 </div>
+
 <%- include('includes/footer') %>
